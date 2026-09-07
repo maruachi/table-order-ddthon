@@ -30,15 +30,27 @@ SAMPLE_STORES = [
     },
 ]
 
-# U2: sample menu per store (category -> list of (name, price, available)).
+# U2: sample menu per store (category -> list of (name, price, available, image_url)).
+# image_url must be a valid http(s) URL (Menu.image_url is HttpUrl-validated);
+# these are stable Unsplash photo URLs matching each item for local dev preview.
 SAMPLE_MENU = {
-    "커피": [("아메리카노", 4000, True), ("카페라떼", 4500, True), ("콜드브루", 5000, False)],
-    "디저트": [("치즈케이크", 6500, True), ("초코쿠키", 3000, True)],
+    "커피": [
+        ("아메리카노", 4000, True, "https://images.unsplash.com/photo-1521302080334-4bebac2763a6?w=600&q=80"),
+        ("카페라떼", 4500, True, "https://images.unsplash.com/photo-1561047029-3000c68339ca?w=600&q=80"),
+        ("콜드브루", 5000, False, "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80"),
+    ],
+    "디저트": [
+        ("치즈케이크", 6500, True, "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&q=80"),
+        ("초코쿠키", 3000, True, "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600&q=80"),
+    ],
 }
 
 
 def _seed_menu(db, store_id: int) -> None:
-    """Idempotent: add sample categories/menus for a store if absent (U2)."""
+    """Idempotent: add sample categories/menus for a store if absent (U2).
+
+    Backfills image_url on existing rows that were seeded before images were added.
+    """
     for cat_order, (cat_name, items) in enumerate(SAMPLE_MENU.items()):
         category = (
             db.query(Category)
@@ -51,8 +63,8 @@ def _seed_menu(db, store_id: int) -> None:
             )
             db.add(category)
             db.flush()
-        for menu_order, (name, price, available) in enumerate(items):
-            exists = (
+        for menu_order, (name, price, available, image_url) in enumerate(items):
+            existing = (
                 db.query(Menu)
                 .filter(
                     Menu.store_id == store_id,
@@ -61,7 +73,7 @@ def _seed_menu(db, store_id: int) -> None:
                 )
                 .first()
             )
-            if exists is None:
+            if existing is None:
                 db.add(
                     Menu(
                         store_id=store_id,
@@ -69,9 +81,12 @@ def _seed_menu(db, store_id: int) -> None:
                         name=name,
                         price=price,
                         available=available,
+                        image_url=image_url,
                         display_order=menu_order,
                     )
                 )
+            elif existing.image_url is None:
+                existing.image_url = image_url
 
 
 def run() -> None:
