@@ -33,6 +33,8 @@ htmlcov/
 *.db
 *.sqlite
 *.sqlite3
+!table_order.db
+!backend/table_order.db
 
 # ---- OS ----
 .DS_Store
