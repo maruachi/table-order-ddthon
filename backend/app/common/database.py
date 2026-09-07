@@ -48,5 +48,6 @@ def init_db() -> None:
     #   from app.auth import models as _auth_models  # noqa: F401
     #   from app.menu import models as _menu_models   # noqa: F401
     # (added when each unit lands)
+    from app.order import models as _order_models  # noqa: F401  (U3: Order, OrderItem)
 
     Base.metadata.create_all(bind=engine)

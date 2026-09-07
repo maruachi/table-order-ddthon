@@ -7,9 +7,25 @@ const routes = [
   // Route slots per unit (placeholders until each unit lands):
   // { path: '/setup', component: () => import('../views/SetupView.vue') },   // U1
   // { path: '/menu', component: () => import('../views/MenuView.vue') },     // U2
-  // { path: '/cart', component: () => import('../views/CartView.vue') },     // U3
-  // { path: '/order', component: () => import('../views/OrderView.vue') },   // U3
-  // { path: '/history', component: () => import('../views/HistoryView.vue') },// U3
+  // U3 Order+Cart routes (table role):
+  {
+    path: '/cart',
+    name: 'cart',
+    component: () => import('../views/order/CartView.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/order/confirm',
+    name: 'order-confirm',
+    component: () => import('../views/order/OrderConfirmView.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/orders',
+    name: 'current-orders',
+    component: () => import('../views/order/CurrentOrdersView.vue'),
+    meta: { requiresAuth: true },
+  },
   { path: '/', name: 'home', component: HomeView, meta: { requiresAuth: false } },
 ]
 

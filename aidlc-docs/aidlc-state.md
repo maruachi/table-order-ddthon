@@ -4,7 +4,7 @@
 - **Project Type**: Greenfield
 - **Project Name**: 테이블오더 서비스 (Table Order Service)
 - **Start Date**: 2026-09-07T03:08:55Z
-- **Current Stage**: CONSTRUCTION - U0 complete (awaiting approval); U1~U4 parallel dev ready
+- **Current Stage**: CONSTRUCTION - U3 Order+Cart (최지영): FD ✓, NFR Req ✓, NFR Design ✓, Infra SKIP, Code Gen ✓ (17 pytest pass, both SPAs build) — awaiting approval gate
 
 ## Workspace State
 - **Existing Code**: No
@@ -62,7 +62,7 @@
 **Parallel units (pending — Sprint 0 contracts fixed by U0):**
 - [ ] U1 Auth (임동규) — Functional Design → NFR → Code Generation
 - [ ] U2 Menu (이원종) — Functional Design → NFR → Code Generation
-- [ ] U3 Order+Cart (최지영) — Functional Design → NFR → Code Generation
+- [x] U3 Order+Cart (최지영) — FD ✓ · NFR Req ✓ · NFR Design ✓ · Infra SKIP · Code Gen ✓ (17 pytest pass, both SPAs build) — awaiting approval gate
 - [ ] U4 Session+Realtime (이재환) — Functional Design → NFR → Code Generation
 
 - [ ] Build and Test - EXECUTE (after all units)
