@@ -66,6 +66,14 @@ def create_app() -> FastAPI:
     app.include_router(order_router)
     app.include_router(session_router)
     app.include_router(realtime_router)
+
+    # U3 integration: replace the order router's stub Contract A/B gateways with
+    # real U2 (menu) / U4 (session) adapters sharing the per-request DB session.
+    from app.order.router import get_menu_lookup, get_session_gateway
+    from app.order.integration import provide_menu_lookup, provide_session_gateway
+
+    app.dependency_overrides[get_menu_lookup] = provide_menu_lookup
+    app.dependency_overrides[get_session_gateway] = provide_session_gateway
     return app
 
 

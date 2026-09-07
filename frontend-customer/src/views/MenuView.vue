@@ -1,17 +1,30 @@
 <script setup>
 // US-C2: customer menu browsing. Category nav + per-category sections +
 // touch-friendly menu cards (NFR-6). Sold-out items show a badge and are not
-// selectable. Adding to cart is U3's boundary (not implemented here).
+// selectable. The detail modal is the add-to-cart entry point into the U3
+// order flow (cart store -> /cart -> /order/confirm).
 import { ref, onMounted } from 'vue'
 import CustomerLayout from '../layouts/CustomerLayout.vue'
 import { fetchMenu } from '../api/menu'
+import { useCartStore } from '../stores/cart'
 
+const cart = useCartStore()
 const categories = ref([])
 const loading = ref(true)
 const error = ref('')
 const selected = ref(null) // menu shown in the detail modal
+const added = ref(false) // brief "added to cart" confirmation
 
 const currency = (n) => `${n.toLocaleString('ko-KR')}원`
+
+function addToCart() {
+  if (!selected.value) return
+  cart.add(selected.value)
+  added.value = true
+  setTimeout(() => {
+    added.value = false
+  }, 1200)
+}
 
 async function load() {
   loading.value = true
@@ -32,6 +45,7 @@ function openDetail(menu) {
 
 function closeDetail() {
   selected.value = null
+  added.value = false
 }
 
 function scrollTo(id) {
@@ -107,7 +121,13 @@ onMounted(load)
           <h3>{{ selected.name }}</h3>
           <p class="modal-price">{{ currency(selected.price) }}</p>
           <p v-if="selected.description" class="modal-desc">{{ selected.description }}</p>
-          <!-- "장바구니 담기" belongs to U3 Order; intentionally omitted here. -->
+          <button
+            class="add-to-cart"
+            data-testid="menu-add-to-cart"
+            @click="addToCart"
+          >
+            {{ added ? '담겼습니다 ✓' : '장바구니 담기' }}
+          </button>
           <button class="close" data-testid="menu-detail-close" @click="closeDetail">닫기</button>
         </div>
       </div>
@@ -153,5 +173,6 @@ onMounted(load)
 .modal-img { width: 100%; border-radius: 12px; margin-bottom: 12px; }
 .modal-price { color: #2563eb; font-weight: 700; }
 .modal-desc { color: #4b5563; }
-.close { width: 100%; min-height: 48px; margin-top: 16px; border-radius: 10px; border: none; background: #2563eb; color: #fff; font-size: 16px; }
+.add-to-cart { width: 100%; min-height: 48px; margin-top: 16px; border-radius: 10px; border: none; background: #2563eb; color: #fff; font-size: 16px; }
+.close { width: 100%; min-height: 48px; margin-top: 8px; border-radius: 10px; border: 1px solid #d1d5db; background: #fff; color: #374151; font-size: 16px; }
 </style>

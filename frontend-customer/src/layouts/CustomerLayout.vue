@@ -4,7 +4,7 @@
 const tabs = [
   { to: '/menu', label: '메뉴' },
   { to: '/cart', label: '장바구니' },
-  { to: '/history', label: '주문내역' },
+  { to: '/orders', label: '주문내역' },
 ]
 </script>
 

@@ -1,6 +1,7 @@
 <script setup>
 // US-C5: current session order history with status.
 import { ref, onMounted } from 'vue'
+import CustomerLayout from '../../layouts/CustomerLayout.vue'
 import orderApi from '../../api/orderApi'
 
 const orders = ref([])
@@ -37,6 +38,7 @@ onMounted(() => load(true))
 </script>
 
 <template>
+  <CustomerLayout>
   <section class="orders" data-testid="current-orders-view">
     <h1>주문 내역</h1>
     <p v-if="error" class="error" data-testid="orders-error">{{ error }}</p>
@@ -70,6 +72,7 @@ onMounted(() => load(true))
       {{ loading ? '불러오는 중…' : '더 보기' }}
     </button>
   </section>
+  </CustomerLayout>
 </template>
 
 <style scoped>

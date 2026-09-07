@@ -2,6 +2,7 @@
 // US-C4: final confirmation and order submission.
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import CustomerLayout from '../../layouts/CustomerLayout.vue'
 import { useCartStore } from '../../stores/cart'
 import orderApi from '../../api/orderApi'
 
@@ -44,6 +45,7 @@ function startRedirect() {
 </script>
 
 <template>
+  <CustomerLayout>
   <section class="confirm" data-testid="order-confirm-view">
     <template v-if="!result">
       <h1>주문 확인</h1>
@@ -82,6 +84,7 @@ function startRedirect() {
       </div>
     </template>
   </section>
+  </CustomerLayout>
 </template>
 
 <style scoped>

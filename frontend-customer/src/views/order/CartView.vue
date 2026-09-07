@@ -1,6 +1,7 @@
 <script setup>
 // US-C3: cart management — quantity control, remove, clear, live total.
 import { useRouter } from 'vue-router'
+import CustomerLayout from '../../layouts/CustomerLayout.vue'
 import { useCartStore } from '../../stores/cart'
 
 const cart = useCartStore()
@@ -12,6 +13,7 @@ function goConfirm() {
 </script>
 
 <template>
+  <CustomerLayout>
   <section class="cart" data-testid="cart-view">
     <h1>장바구니</h1>
 
@@ -81,6 +83,7 @@ function goConfirm() {
       </div>
     </div>
   </section>
+  </CustomerLayout>
 </template>
 
 <style scoped>
