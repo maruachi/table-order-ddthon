@@ -4,7 +4,7 @@
 - **Project Type**: Greenfield
 - **Project Name**: 테이블오더 서비스 (Table Order Service)
 - **Start Date**: 2026-09-07T03:08:55Z
-- **Current Stage**: CONSTRUCTION - U0 complete (awaiting approval); U1~U4 parallel dev ready
+- **Current Stage**: CONSTRUCTION - U0 complete; U2 Menu (이원종) Functional Design complete (approved), next = NFR Requirements; U1/U3/U4 parallel dev ready
 
 ## Workspace State
 - **Existing Code**: No
@@ -61,7 +61,7 @@
 
 **Parallel units (pending — Sprint 0 contracts fixed by U0):**
 - [ ] U1 Auth (임동규) — Functional Design → NFR → Code Generation
-- [ ] U2 Menu (이원종) — Functional Design → NFR → Code Generation
+- [~] U2 Menu (이원종) — [x] Functional Design → [ ] NFR Requirements → [ ] NFR Design → [ ] Code Generation  *(branch: u2-menu)*
 - [ ] U3 Order+Cart (최지영) — Functional Design → NFR → Code Generation
 - [ ] U4 Session+Realtime (이재환) — Functional Design → NFR → Code Generation
 

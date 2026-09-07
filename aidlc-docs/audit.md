@@ -161,3 +161,27 @@ AI-DLC 워크플로우를 시작해봅시다."
 **Context**: CONSTRUCTION - U0 complete, parallel dev ready. Awaiting approval.
 
 ---
+
+## CONSTRUCTION U2 Menu - Functional Design Plan + Questions Created
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "나는 개발자 이원종이고 유닛 2 개발 진행하면 돼. aidlc-docs/aidlc-state.md를 확인하고, 첫 번째 미완료 항목부터 이어서 진행해주세요."
+**AI Response**: Developer 이원종 resuming for U2 Menu parallel development. Read aidlc-state.md; first incomplete U2 item = Functional Design. Loaded functional-design rule, U2 unit definition (US-A8, US-C2), Menu component/methods, Contract A (get_menu_items), and U0 functional-design artifacts as style/style reference. Created aidlc-docs/construction/plans/u2-menu-functional-design-plan.md with mandatory-artifact checklist (domain-entities/business-logic-model/business-rules/frontend-components) + 9 embedded [Answer]: questions covering: (Q1) category modeling entity-vs-string, (Q2) category management scope, (Q3) menu delete semantics hard-vs-soft, (Q4) availability/sold-out toggle in MVP, (Q5) display-order scope, (Q6) price type/validation range, (Q7) required fields + image_url validation, (Q8) Contract A exposure + invalid/deleted handling, (Q9) customer menu response shape. Awaiting user answers (GATE).
+**Context**: CONSTRUCTION - U2 Menu Functional Design, questions gate. Awaiting 이원종's answers.
+
+---
+
+## CONSTRUCTION U2 Menu - Functional Design Answers + Clarification + Artifacts Generated
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: 이원종 filled plan answers (Q1:A, Q2:A, Q3:B, Q4:A, Q5:B, Q6:B, Q7:B, Q8:A[corrected from B], Q9:A) and clarification A. Prior to correction, ran contradiction check on initial Q8:B and detected a conflict between Q4:A (availability toggle + Contract A `available` field) and Q8:B (silently drop invalid) — created u2-menu-functional-design-clarification-questions.md with 1 question. User answered clarification:A and corrected Q8 to A (surface status/errors to U3 rather than silently drop).
+**AI Response**: Reconciled final answers (all consistent, no remaining ambiguity): Category = separate entity with explicit admin CRUD; Menu soft-delete (is_deleted) + independent availability toggle (available); both category and per-category menu display_order; price = integer KRW >=0 no upper bound; name/price/category required, description optional, image_url optional with http(s) format validation; Contract A get_menu_items returns existing non-deleted items with real `available` flag and server `price` (excludes deleted/non-existent), U3 owns order-eligibility judgment; customer menu response grouped by category. Generated aidlc-docs/construction/u2-menu/functional-design/: domain-entities.md (Category, Menu entities + ER), business-logic-model.md (3-layer, repositories, MenuService methods incl. category CRUD + Contract A, reorder algorithm, REST endpoint map), business-rules.md (BR-U2-0..18), frontend-components.md (customer MenuView US-C2 + admin MenuManageView US-A8, form validation, API map). Marked all 4 plan checkboxes [x]. Work on branch u2-menu. Presenting Functional Design completion + REVIEW gate.
+**Context**: CONSTRUCTION - U2 Menu Functional Design artifacts complete. Awaiting 이원종's approval before NFR Requirements.
+
+---
+
+## CONSTRUCTION U2 Menu - Functional Design Approved + Committed
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "승인 + 커밋"
+**AI Response**: 이원종 approved U2 Menu Functional Design and requested commit. Marked U2 Functional Design complete in aidlc-state.md (U2 sub-progress: Functional Design [x], next = NFR Requirements). Committed all U2 functional-design work (plan + clarification + 4 artifacts + state/audit updates) on branch u2-menu. Next stage = NFR Requirements (U2).
+**Context**: CONSTRUCTION - U2 Menu Functional Design approved. Next = NFR Requirements (U2).
+
+---
