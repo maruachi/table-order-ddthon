@@ -1,0 +1,53 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Environment / secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Databases ----
+*.db
+*.sqlite
+*.sqlite3
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- Editors / IDE ----
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ---- Obsidian (keep vault config out of VCS) ----
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache/
+
+# ---- Logs ----
+*.log
