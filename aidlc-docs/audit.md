@@ -392,3 +392,11 @@ AI-DLC 워크플로우를 시작해봅시다."
 **Context**: CONSTRUCTION - U2 Menu NFR Requirements approved. Next = NFR Design (U2).
 
 ---
+
+---
+
+## U2 Menu — NFR Design Complete
+**Timestamp**: 2026-09-07T00:00:00Z (local)
+**User Input**: "GOGO"
+**AI Response**: Generated NFR Design plan (no open questions — all patterns inherited from U0 or N/A for local demo). Wrote 2 artifacts: nfr-design-patterns.md (inherited multi-tenancy/auth-guard/validation/soft-delete·availability/reorder/persistence patterns; caching·pagination·realtime·infra marked NOT applied) and logical-components.md (Menu package: router/service/repository/models/schemas + frontend views; infra components N/A). Awaiting approval gate.
+**Context**: U2 CONSTRUCTION — NFR Design
