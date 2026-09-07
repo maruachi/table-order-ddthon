@@ -3,6 +3,7 @@
 // 재연결(Q7=C): onopen 시 스냅샷 재조회로 재동기화.
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import AdminLayout from '../layouts/AdminLayout.vue'
+import OrderDetailModal from './order/OrderDetailModal.vue'
 import { openSse } from '../api/sse'
 import { getDashboard, closeSession } from '../api/session'
 
@@ -10,6 +11,7 @@ const tables = ref([])
 const filterTableId = ref(null)
 const connected = ref(false)
 const toast = ref(null)
+const selectedOrderId = ref(null) // opens the order-management modal (US-A3)
 
 let es = null
 const highlightTimers = {}
@@ -63,18 +65,36 @@ function onEvent(evt) {
     return
   }
   if (evt.type.startsWith('order.')) {
+    // Table total: order.deleted carries the recomputed table_total.
     if (typeof payload.total_amount === 'number') card.total_amount = payload.total_amount
+    else if (typeof payload.table_total === 'number') card.total_amount = payload.table_total
     if (payload.order_no != null) {
       const preview = {
+        // Map from the event payload shape ({order_id, order_no, status, total}).
+        order_id: payload.order_id,
         order_no: payload.order_no,
-        order_status: payload.order_status,
-        order_amount: payload.order_amount,
+        order_status: payload.status ?? payload.order_status,
+        order_amount: payload.total ?? payload.order_amount,
       }
       const rest = (card.recent_orders || []).filter((o) => o.order_no !== payload.order_no)
       card.recent_orders = [preview, ...rest].slice(0, 3)
     }
     flashCard(card)
   }
+}
+
+function openOrder(order) {
+  if (order?.order_id != null) selectedOrderId.value = order.order_id
+}
+
+function onOrderChanged() {
+  // Status changed: refresh the snapshot so previews/totals resync.
+  loadDashboard()
+}
+
+function onOrderDeleted() {
+  selectedOrderId.value = null
+  loadDashboard()
 }
 
 async function onClose(card) {
@@ -159,7 +179,13 @@ onBeforeUnmount(() => {
             <li v-if="!card.recent_orders || card.recent_orders.length === 0" class="muted">
               주문 없음
             </li>
-            <li v-for="(o, i) in card.recent_orders" :key="o.order_no ?? i">
+            <li
+              v-for="(o, i) in card.recent_orders"
+              :key="o.order_no ?? i"
+              :class="{ clickable: o.order_id != null }"
+              :data-testid="o.order_id != null ? `order-row-${o.order_id}` : undefined"
+              @click="openOrder(o)"
+            >
               <span class="order-no">#{{ o.order_no }}</span>
               <span v-if="o.order_status" class="badge">{{ o.order_status }}</span>
               <span class="order-amt">{{ formatAmount(o.order_amount) }}원</span>
@@ -173,6 +199,14 @@ onBeforeUnmount(() => {
       </div>
 
       <div v-if="toast" class="toast" data-testid="close-toast">{{ toast }}</div>
+
+      <OrderDetailModal
+        v-if="selectedOrderId != null"
+        :order-id="selectedOrderId"
+        @close="selectedOrderId = null"
+        @changed="onOrderChanged"
+        @deleted="onOrderDeleted"
+      />
     </section>
   </AdminLayout>
 </template>
@@ -258,6 +292,15 @@ onBeforeUnmount(() => {
 }
 .orders .muted {
   color: #9ca3af;
+}
+.orders li.clickable {
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 2px 4px;
+  margin: 0 -4px;
+}
+.orders li.clickable:hover {
+  background: #f3f4f6;
 }
 .order-no {
   color: #374151;

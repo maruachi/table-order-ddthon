@@ -19,7 +19,8 @@ const routes = [
   },
   // Route slots per unit (placeholders until each unit lands):
   { path: '/menu', name: 'menu-admin', component: () => import('../views/MenuAdminView.vue'), meta: { requiresAuth: true } }, // U2
-  // { path: '/orders/:id', component: () => import('../views/OrderDetailView.vue') }, // U3
+  // U3 order management (US-A3/A5) is handled via OrderDetailModal opened from
+  // the dashboard order rows — no standalone route needed.
   // U4 routes. requiresAuth stays false until U1 login lands (standalone build/run);
   // U1 to flip these to requiresAuth: true on integration.
   { path: '/dashboard', name: 'dashboard', component: () => import('../views/DashboardView.vue'), meta: { requiresAuth: false } },

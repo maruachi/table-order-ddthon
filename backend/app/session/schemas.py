@@ -12,6 +12,9 @@ from pydantic import BaseModel
 
 
 class RecentOrder(BaseModel):
+    # order_id lets the admin dashboard open an order for management (US-A3).
+    # Optional so pre-integration providers (no id) still validate.
+    order_id: int | None = None
     order_no: str
     order_status: str
     order_amount: int

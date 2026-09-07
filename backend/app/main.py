@@ -34,6 +34,12 @@ async def lifespan(_: FastAPI):
 
     broker.bind_loop(asyncio.get_running_loop())
     register_publisher(broker)
+    # U3 integration (Contract C): register the real order-history provider so
+    # U4's dashboard preview and session-close snapshot see live U3 orders.
+    from app.order.history_provider import OrderHistoryProviderImpl
+    from app.session.provider import register_order_provider
+
+    register_order_provider(OrderHistoryProviderImpl())
     yield
 
 

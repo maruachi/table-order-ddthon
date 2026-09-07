@@ -166,6 +166,7 @@ class SessionService:
             )[:preview_n]
             recent = [
                 RecentOrder(
+                    order_id=o.get("order_id"),
                     order_no=o["order_no"],
                     order_status=o["order_status"],
                     order_amount=int(o["order_amount"]),
