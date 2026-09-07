@@ -20,10 +20,12 @@ from app.common.exceptions import register_exception_handlers
 async def lifespan(_: FastAPI):
     # Create schema on startup (create_all; non-destructive).
     init_db()
-    # Domain units register integrations at startup, e.g.:
-    #   from app.auth.verifier import JwtTokenVerifier
-    #   from app.common.security import register_token_verifier
-    #   register_token_verifier(JwtTokenVerifier())
+    # U1 Auth registers the token verifier (Contract E).
+    from app.auth.tokens import JwtTokenVerifier
+    from app.common.security import register_token_verifier
+
+    register_token_verifier(JwtTokenVerifier())
+    # Other units register integrations at startup, e.g.:
     #   from app.realtime.broker import InMemoryBroker
     #   from app.common.realtime import register_publisher
     #   register_publisher(InMemoryBroker())
@@ -47,9 +49,10 @@ def create_app() -> FastAPI:
     def health() -> dict[str, str]:
         return {"status": "ok"}
 
-    # Domain routers are included as units land, e.g.:
-    #   from app.auth.router import router as auth_router
-    #   app.include_router(auth_router)
+    # Domain routers are included as units land.
+    from app.auth.router import router as auth_router
+
+    app.include_router(auth_router)
     return app
 
 

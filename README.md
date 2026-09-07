@@ -37,7 +37,7 @@ frontend-admin/          관리자용 Vue SPA (앱 셸 U0 + 유닛 화면)
 cd backend
 python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-python -m seeds.seed          # 샘플 데이터(매장 demo-cafe/demo-bistro, 테이블 비번 1234)
+python -m seeds.seed          # 샘플 데이터(매장 demo-cafe/demo-bistro, 관리자 admin/admin1234, 테이블 비번 1234)
 uvicorn app.main:app --reload # http://localhost:8000 (문서: /docs)
 ```
 
@@ -54,4 +54,9 @@ cd backend && source .venv/bin/activate && pytest
 
 ## 현재 상태
 - ✅ **U0 Platform/Common** 완료 — 공통 기반·계약(A~E)·앱 셸·시드·테스트. 병렬 개발(U1~U4) 착수 준비 완료.
-- ⏳ U1~U4: Sprint 0 계약 고정 후 병렬 개발 예정.
+- ✅ **U1 Auth**(임동규) 완료 — 관리자 로그인(JWT 16h·시도제한 5회/15분 자동해제), 테이블 로그인(JWT 720h·자동 로그인), 테이블 설정 CRUD(관리자), 계약 E `JwtTokenVerifier` 등록. 화면: 관리자 `/login`·`/tables`, 고객 `/setup`.
+- ⏳ U2~U4: Sprint 0 계약 고정 후 병렬 개발 예정.
+
+### U1 인증 사용 (시드 계정)
+- 관리자 로그인: 매장코드 `demo-cafe`, 아이디 `admin`, 비밀번호 `admin1234`.
+- 테이블 로그인: 매장코드 `demo-cafe`, 테이블 번호 `1`, 비밀번호 `1234`.

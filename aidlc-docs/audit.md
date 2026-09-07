@@ -161,3 +161,67 @@ AI-DLC 워크플로우를 시작해봅시다."
 **Context**: CONSTRUCTION - U0 complete, parallel dev ready. Awaiting approval.
 
 ---
+
+## CONSTRUCTION U1 Auth - Functional Design Start (Planning + Questions)
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "나는 개발자 임동규이고 유닛 1 개발 진행하면 돼. aidlc-docs/aidlc-state.md를 확인하고, 첫 번째 미완료 항목부터 이어서 진행해주세요."
+**AI Response**: Confirmed via aidlc-state.md that first incomplete item is U1 Auth (owner: 임동규), starting its per-unit CONSTRUCTION loop at Functional Design. Loaded U1 scope (US-A1 admin JWT login, US-A4 table tablet init setup, US-C1 tablet auto-login/table session token), Contract E (StoreContext/TokenVerifier registry in common/security.py), U0 domain entities (Store.code, Table.password_hash), and config.py auth settings (jwt HS256, admin 16h, table 30d, max_login_attempts=5). Created u1-auth-functional-design-plan.md with checkboxed deliverables and 7 embedded [Answer]: questions (admin provisioning, attempt-limit mechanism/scope/reset, US-A4 table create-vs-edit semantics, table login identifier, table token format/refresh, logout/token invalidation). Awaiting user answers before generating FD artifacts.
+**Context**: CONSTRUCTION - U1 Auth Functional Design (Part 1 planning). Awaiting answers.
+
+---
+
+## CONSTRUCTION U1 Auth - Functional Design Artifacts Generated
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "다음단계로 진행해줘." (plan file answers: Q1=A, Q2=A, Q3=A, Q4=A, Q5=B, Q6=A, Q7=A)
+**AI Response**: Read answers from u1-auth-functional-design-plan.md. Checked for contradictions — none (Q2=A in-memory + Q3=A time-reset consistent; Q5=B = U1 owns table create/update writes on U0 Table entity). Generated 4 FD artifacts in aidlc-docs/construction/u1-auth/functional-design/: domain-entities.md (AdminUser new U1 entity + in-memory attempt tracking + Table U0-owned reference), business-logic-model.md (admin_login/table_login/table CRUD ops, JWT claim spec, JwtTokenVerifier Contract-E impl+registration, LoginAttemptTracker), business-rules.md (BR-U1-1..16), frontend-components.md (admin AdminLoginView+TableManageView, customer SetupView+auto-login guard). Verified U0 exception set — ConflictError does NOT exist, switched duplicate-table-number rule to ValidationError. Marked plan deliverable checkboxes [x]. Presenting Functional Design completion gate (2-option). Next stage: NFR Requirements (U1).
+**Context**: CONSTRUCTION - U1 Auth Functional Design complete. Awaiting approval.
+
+---
+
+## CONSTRUCTION U1 Auth - Functional Design Approved / NFR Requirements Start
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "다음단계로 진행해줘."
+**AI Response**: Treated as explicit approval of U1 Functional Design. Advancing to NFR Requirements (U1). Confirmed backend deps already provide python-jose + passlib[bcrypt] (U0 requirements.txt) → no new dependency; JWT/bcrypt tech settled by U0. Created u1-auth-nfr-requirements-plan.md with checkboxed NFR assessment scope (NFR-2 auth security, NFR-3 tenant isolation, NFR-4 persistence, maintainability/testability) and 3 focused questions (lockout duration default, attempt-limit key granularity, auth endpoint latency expectation). Awaiting answers before generating NFR artifacts.
+**Context**: CONSTRUCTION - U1 Auth NFR Requirements (Part 1 planning). Awaiting answers.
+
+---
+
+## CONSTRUCTION U1 Auth - NFR Requirements Artifacts Generated
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "진행해줘." (plan answers: Q1=A 15min lockout, Q2=A key=(store_id,username), Q3=A no SLA)
+**AI Response**: No contradictions. Generated NFR artifacts in aidlc-docs/construction/u1-auth/nfr-requirements/: nfr-requirements.md (NFR-2 auth security core, NFR-3 tenant isolation, NFR-4 persistence, NFR-5/6 frontend, NFR-1 N/A; extensions all Disabled→N/A) and tech-stack-decisions.md (inherited U0 stack, no new backend dependency; U1-specific: AdminUser model seed-only, in-memory attempt tracker, new config lockout_minutes=15). Marked plan checkboxes [x]. Presenting NFR Requirements completion gate (2-option). Next stage: NFR Design (U1).
+**Context**: CONSTRUCTION - U1 Auth NFR Requirements complete. Awaiting approval.
+
+---
+
+## CONSTRUCTION U1 Auth - NFR Requirements Approved / NFR Design Complete
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "다음단계로 진행해줘."
+**AI Response**: Treated as approval of U1 NFR Requirements. Executed NFR Design (U1). All NFR pattern categories already resolved by FD/NFR-Req (security decided; resilience/scalability/performance N/A at local scope) → documented per-category justification in u1-auth-nfr-design-plan.md with no open questions (matches U0 precedent). Generated aidlc-docs/construction/u1-auth/nfr-design/: nfr-design-patterns.md (dependency-inversion verifier registration, stateless JWT+role claims, in-memory throttling with 15min time-based auto-unlock, scoped-repository isolation, uniform failure/no-enumeration, typed AppError) and logical-components.md (backend auth/ router-service-tokens-attempts-repository-models-schemas; U0 integration slots: register_token_verifier, include_router, init_db model import, config lockout_minutes, seed admin+table; frontend AdminLoginView/TableManageView/SetupView reusing U0 shell). Presenting NFR Design completion gate (2-option). Next stage: Code Generation (U1).
+**Context**: CONSTRUCTION - U1 Auth NFR Design complete. Awaiting approval.
+
+---
+
+## CONSTRUCTION U1 Auth - NFR Design Approved / Code Generation Plan (Part 1)
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "진행해줘."
+**AI Response**: Treated as approval of U1 NFR Design. Entered Code Generation Part 1 (Planning). Read U0 conventions (repository flush + service commit, models Mapped style, exceptions set, main.py/database.py/config.py integration slots, seed pattern, frontend axios client baseURL=host with 401→/login·/setup). Created u1-auth-code-generation-plan.md as single source of truth: 15 numbered steps with checkboxes + story trace (US-A1/A4/C1) + Contract E. Backend app/auth/: models(AdminUser), schemas, repository(AdminUser/Table), tokens(issue_admin/table + JwtTokenVerifier), attempts(in-memory tracker), service, router(/api/auth/*, /api/admin/tables); config lockout_minutes add; main.py/database.py integration; seed admin accounts; tests/auth. Frontend admin(AdminLoginView/TableManageView) + customer(SetupView) with data-testid. Logging approval prompt now; awaiting explicit approval of the plan before Part 2 generation.
+**Context**: CONSTRUCTION - U1 Auth Code Generation Part 1 (Planning). Awaiting plan approval.
+
+---
+
+## CONSTRUCTION U1 Auth - Code Generation Plan Approved / Part 2 Execution
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "aidlc-docs/aidlc-state.md를 확인하고, 첫 번째 미완료 항목부터 이어서  진행해주세요.\n\nApprove Plan — I'll execute Part 2 and generate all U1 code + tests"
+**AI Response**: Confirmed first incomplete item = U1 Auth (임동규). Treated as approval of the U1 Code Generation Plan. Executing Part 2: generating all backend code (app/auth/: models, schemas, repository, tokens, attempts, service, router), U0 integration slots (main.py verifier+router, database.py model import, config lockout_minutes), seed admin accounts, backend auth tests, frontend admin (AdminLoginView/TableManageView + api/auth.js + router) and customer (SetupView + api/auth.js + router), and code-summary doc. Marking plan checkboxes [x] as steps complete.
+**Context**: CONSTRUCTION - U1 Auth Code Generation Part 2 (Generation).
+
+---
+
+## CONSTRUCTION U1 Auth - Code Generation Part 2 Complete
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: (continuation of approved Part 2 execution)
+**AI Response**: Generated all 15 plan steps. Backend app/auth/: models.py(AdminUser), schemas.py, repository.py(AdminUserRepository/TableRepository/StoreResolver), tokens.py(issue_admin/issue_table + JwtTokenVerifier, Contract E), attempts.py(in-memory LoginAttemptTracker + shared singleton), service.py(AuthService: admin_login/table_login/list_tables/create_table/update_table), router.py(/api/auth/admin/login, /api/auth/table/login, GET/POST /api/admin/tables, PUT /api/admin/tables/{id}). U0 in-place integration: main.py(register_token_verifier + include_router), database.py(auth models import), config.py(lockout_minutes=15), seeds/seed.py(per-store admin admin/admin1234). Tests tests/auth/test_auth.py (16 tests). Frontend admin(api/auth.js, AdminLoginView.vue, TableManageView.vue, router /login+/tables) + customer(api/auth.js, SetupView.vue, router /setup + auto-login guard). Docs: code-summary.md, README U1 notes. VERIFIED: pytest 21 passed (5 U0 + 16 U1); app boots with verifier (no-token 401, seeded admin login 200, tokened tables 200 x6, table login 200); both SPAs npm run build succeeded. All 15 plan checkboxes [x]; aidlc-state.md U1 marked complete. Presenting Code Generation completion gate (2-option).
+**Context**: CONSTRUCTION - U1 Auth Code Generation complete. Awaiting approval.
+
+---

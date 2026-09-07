@@ -28,6 +28,7 @@ class Settings(BaseSettings):
 
     # Auth policy (NFR-2)
     max_login_attempts: int = 5
+    lockout_minutes: int = 15  # U1: lock duration after too many attempts (TO_LOCKOUT_MINUTES, Q1=A)
 
 
 settings = Settings()
