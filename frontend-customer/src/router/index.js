@@ -6,7 +6,7 @@ import HomeView from '../views/HomeView.vue'
 const routes = [
   // Route slots per unit (placeholders until each unit lands):
   // { path: '/setup', component: () => import('../views/SetupView.vue') },   // U1
-  // { path: '/menu', component: () => import('../views/MenuView.vue') },     // U2
+  { path: '/menu', name: 'menu', component: () => import('../views/MenuView.vue'), meta: { requiresAuth: true } }, // U2
   // { path: '/cart', component: () => import('../views/CartView.vue') },     // U3
   // { path: '/order', component: () => import('../views/OrderView.vue') },   // U3
   // { path: '/history', component: () => import('../views/HistoryView.vue') },// U3

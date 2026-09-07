@@ -7,7 +7,7 @@ const routes = [
   // Route slots per unit (placeholders until each unit lands):
   // { path: '/login', component: () => import('../views/LoginView.vue') },        // U1
   // { path: '/tables', component: () => import('../views/TablesView.vue') },      // U1
-  // { path: '/menu', component: () => import('../views/MenuAdminView.vue') },     // U2
+  { path: '/menu', name: 'menu-admin', component: () => import('../views/MenuAdminView.vue'), meta: { requiresAuth: true } }, // U2
   // { path: '/orders/:id', component: () => import('../views/OrderDetailView.vue') }, // U3
   // { path: '/dashboard', component: () => import('../views/DashboardView.vue') },// U4
   // { path: '/history', component: () => import('../views/HistoryView.vue') },    // U4

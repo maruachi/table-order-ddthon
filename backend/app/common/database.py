@@ -43,10 +43,10 @@ def init_db() -> None:
     """
     # Import models so they are registered on Base.metadata before create_all.
     from app.common import models  # noqa: F401  (Store, Table)
+    from app.menu import models as _menu_models  # noqa: F401  (Category, Menu) — U2
 
     # NOTE: domain units register their models by importing them here, e.g.:
     #   from app.auth import models as _auth_models  # noqa: F401
-    #   from app.menu import models as _menu_models   # noqa: F401
     # (added when each unit lands)
 
     Base.metadata.create_all(bind=engine)
