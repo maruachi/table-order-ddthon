@@ -400,3 +400,34 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "GOGO"
 **AI Response**: Generated NFR Design plan (no open questions — all patterns inherited from U0 or N/A for local demo). Wrote 2 artifacts: nfr-design-patterns.md (inherited multi-tenancy/auth-guard/validation/soft-delete·availability/reorder/persistence patterns; caching·pagination·realtime·infra marked NOT applied) and logical-components.md (Menu package: router/service/repository/models/schemas + frontend views; infra components N/A). Awaiting approval gate.
 **Context**: U2 CONSTRUCTION — NFR Design
+
+---
+
+## U2 Menu — Code Generation (Part 1: Planning)
+**Timestamp**: 2026-09-07T00:10:00Z (local)
+**User Input**: "승인 및 PUSH" (approved NFR Design; then proceeding to Code Generation)
+**AI Response**: Committed/pushed NFR Design (4d7261a). Read code-generation.md rule + U0 code (repository/security/database/models/exceptions/schemas/main/seed/tests, frontend routers/client/views). Created 15-step code generation plan at aidlc-docs/construction/plans/u2-menu-code-generation-plan.md covering backend (models/schemas/repository/service/router + U0 integration + tests + seed) and both SPAs (customer MenuView + admin MenuAdminView + api + router slots). Noted route-slot reconciliation: use U0-reserved `/menu` slots. Awaiting plan approval before generation.
+**Context**: U2 CONSTRUCTION — Code Generation Part 1 (Planning)
+
+---
+
+## U2 Menu — Code Generation Plan Approved / Part 2 Start
+**Timestamp**: 2026-09-07T00:15:00Z (local)
+**User Input**: "승인" (approved code generation plan; U0-reserved `/menu` route slot confirmed)
+**AI Response**: Beginning Part 2 generation per approved 15-step plan.
+**Context**: U2 CONSTRUCTION — Code Generation Part 2 (Generation)
+
+---
+
+## U2 Menu — Code Generation (Part 2: Generation) Complete
+**Timestamp**: 2026-09-07T00:30:00Z (local)
+**AI Response**: Executed all 15 plan steps. Created backend menu package (models/schemas/repository/service/router/__init__) + tests/test_menu.py; modified common/database.py (model registration), main.py (router include), seeds/seed.py (sample menu). Created frontend files: customer api/menu.js + views/MenuView.vue + router slot; admin api/menuAdmin.js + views/MenuAdminView.vue + router slot. Wrote code-summary.md. All plan checkboxes + story traceability marked [x]. NOTE: pytest/SPA build execution deferred to Build & Test phase — no Python interpreter on PATH here (Windows Store stub only); node present but node_modules not installed. Awaiting user approval of generated code.
+**Context**: U2 CONSTRUCTION — Code Generation Part 2
+
+---
+
+## U2 Menu — Code Generation Approved / Unit Complete
+**Timestamp**: 2026-09-07T00:35:00Z (local)
+**User Input**: "승인"
+**AI Response**: Marked U2 Code Generation complete and U2 unit COMPLETE in aidlc-state.md. Committing and pushing all U2 code + docs to origin/u2-menu.
+**Context**: U2 CONSTRUCTION — Code Generation approval; U2 unit finished (Build & Test runs after all units)

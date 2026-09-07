@@ -12,7 +12,7 @@ const routes = [
     meta: { requiresAuth: false },
   },
   // Route slots per unit (placeholders until each unit lands):
-  // { path: '/menu', component: () => import('../views/MenuView.vue') },     // U2
+  { path: '/menu', name: 'menu', component: () => import('../views/MenuView.vue'), meta: { requiresAuth: true } }, // U2
   // U3 Order+Cart routes (table role):
   {
     path: '/cart',

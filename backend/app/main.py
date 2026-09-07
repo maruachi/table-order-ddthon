@@ -56,11 +56,13 @@ def create_app() -> FastAPI:
 
     # Domain routers are included as units land.
     from app.auth.router import router as auth_router
+    from app.menu.router import router as menu_router  # U2 Menu
     from app.order.router import router as order_router  # U3
     from app.session.router import router as session_router  # U4
     from app.realtime.router import router as realtime_router  # U4
 
     app.include_router(auth_router)
+    app.include_router(menu_router)
     app.include_router(order_router)
     app.include_router(session_router)
     app.include_router(realtime_router)

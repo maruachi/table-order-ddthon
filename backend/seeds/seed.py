@@ -9,6 +9,7 @@ from app.auth.models import AdminUser
 from app.common.database import SessionLocal, init_db
 from app.common.models import Store, Table
 from app.common.security import hash_password
+from app.menu.models import Category, Menu
 
 SAMPLE_STORES = [
     {
@@ -28,6 +29,49 @@ SAMPLE_STORES = [
         "admin_pw": "admin1234",
     },
 ]
+
+# U2: sample menu per store (category -> list of (name, price, available)).
+SAMPLE_MENU = {
+    "커피": [("아메리카노", 4000, True), ("카페라떼", 4500, True), ("콜드브루", 5000, False)],
+    "디저트": [("치즈케이크", 6500, True), ("초코쿠키", 3000, True)],
+}
+
+
+def _seed_menu(db, store_id: int) -> None:
+    """Idempotent: add sample categories/menus for a store if absent (U2)."""
+    for cat_order, (cat_name, items) in enumerate(SAMPLE_MENU.items()):
+        category = (
+            db.query(Category)
+            .filter(Category.store_id == store_id, Category.name == cat_name)
+            .first()
+        )
+        if category is None:
+            category = Category(
+                store_id=store_id, name=cat_name, display_order=cat_order
+            )
+            db.add(category)
+            db.flush()
+        for menu_order, (name, price, available) in enumerate(items):
+            exists = (
+                db.query(Menu)
+                .filter(
+                    Menu.store_id == store_id,
+                    Menu.category_id == category.id,
+                    Menu.name == name,
+                )
+                .first()
+            )
+            if exists is None:
+                db.add(
+                    Menu(
+                        store_id=store_id,
+                        category_id=category.id,
+                        name=name,
+                        price=price,
+                        available=available,
+                        display_order=menu_order,
+                    )
+                )
 
 
 def run() -> None:
@@ -74,6 +118,7 @@ def run() -> None:
                             password_hash=hash_password(s["table_pw"]),
                         )
                     )
+            _seed_menu(db, store.id)
             db.commit()
         print("seed complete.")
     finally:

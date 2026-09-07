@@ -18,7 +18,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   // Route slots per unit (placeholders until each unit lands):
-  // { path: '/menu', component: () => import('../views/MenuAdminView.vue') },     // U2
+  { path: '/menu', name: 'menu-admin', component: () => import('../views/MenuAdminView.vue'), meta: { requiresAuth: true } }, // U2
   // { path: '/orders/:id', component: () => import('../views/OrderDetailView.vue') }, // U3
   // U4 routes. requiresAuth stays false until U1 login lands (standalone build/run);
   // U1 to flip these to requiresAuth: true on integration.
