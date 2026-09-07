@@ -249,3 +249,66 @@ AI-DLC 워크플로우를 시작해봅시다."
 **Context**: CONSTRUCTION - U2 Menu Functional Design approved. Next = NFR Requirements (U2).
 
 ---
+
+## CONSTRUCTION U3 - Start (개발자 최지영)
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "나는 개발자 최지영이고 유닛 1 개발 진행하면 돼. aidlc-docs/aidlc-state.md를 확인하고, 첫 번째 미완료 항목부터 이어서 진행해주세요."
+**AI Response**: Detected mismatch — user said "유닛 1"/"첫 번째 미완료 항목" (=U1 Auth), but docs assign 최지영 → U3 Order+Cart (U1 Auth is 임동규). Asked user to disambiguate via AskUserQuestion. User selected **U3 Order+Cart (주문)**. Proceeding as 최지영 on U3, entering CONSTRUCTION per-unit loop at Functional Design. Loaded U0 fixed contracts (StoreContext[E], events+realtime[D], BaseRepository[NFR-3], exceptions, schemas) and U3 stories US-C3/C4/C5, US-A3/A5. Creating U3 Functional Design plan with embedded design questions.
+**Context**: CONSTRUCTION - U3 Order+Cart Functional Design start.
+
+---
+
+## CONSTRUCTION U3 - Functional Design Questions (defaults adopted)
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: (AskUserQuestion — user did not answer / dismissed)
+**AI Response**: User declined to answer the 5 U3 design questions; per original directive to continue, adopted the recommended defaults documented in u3-order-cart-functional-design-plan.md: Q1=매장별 일련번호(order_no store-scoped), Q2=소프트 삭제(is_deleted), Q3=Order.archived 플래그(계약 C), Q4=get_dashboard_snapshot는 U3 제공, Q5=주문 상태 자유 전이. Also fixed defaults: 단가 스냅샷(menu_name/unit_price 복사), 서버측 총액 재계산, 첫 주문 시 계약 B로 세션 시작. User may override at the Functional Design approval gate. Generating 4 functional-design artifacts.
+**Context**: CONSTRUCTION - U3 Functional Design decisions locked (defaults).
+
+---
+
+## CONSTRUCTION U3 - Functional Design Approved → NFR Requirements
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "ㅇㅇ 진행해줘"
+**AI Response**: Treated as explicit approval of U3 Functional Design. Marked FD stage complete. Proceeding to NFR Requirements (U3). Loaded nfr-requirements.md rule + U0 nfr-requirements/tech-stack-decisions (tech stack fixed at U0: Python3.11/FastAPI/SQLAlchemy sync/SQLite/pytest; extensions Security/Resiliency/Property-Based all Disabled → N/A). U3 inherits baseline; NFR focus = apply NFR-1(order.created <2s publish), NFR-3(isolation), NFR-4(persistence), order_no concurrency, indexes. No new tech decisions required; no genuine user-decision ambiguities → no interactive questions (consistent with U0).
+**Context**: CONSTRUCTION - U3 FD approved, NFR Requirements start.
+
+---
+
+## CONSTRUCTION U3 - NFR Requirements Approved → NFR Design
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "ㅇㅇ 승인할게 계속 진행해줘"
+**AI Response**: Explicit approval of U3 NFR Requirements. Marked NFR Requirements complete. Proceeding to NFR Design (U3). Loaded nfr-design.md rule + U0 nfr-design (logical-components, nfr-design-patterns). U3 reuses U0 patterns (context-injected tenant scoping, scoped repository, pluggable publisher+best-effort, session-per-request, typed AppError). No new infra components (queues/caches/circuit breakers) — local demo N/A. Extensions Disabled → N/A. No user-decision ambiguities → no interactive questions. Generating nfr-design-patterns.md + logical-components.md.
+**Context**: CONSTRUCTION - U3 NFR Requirements approved, NFR Design start.
+
+---
+
+## CONSTRUCTION U3 - NFR Design Approved → Code Generation Part 1 (Planning)
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "계속 진행해줘"
+**AI Response**: Explicit approval of U3 NFR Design. Marked NFR Design complete; Infrastructure Design SKIP (local dev only). Entering Code Generation Part 1 (Planning) per code-generation.md. Creating numbered, checkbox-tracked plan at construction/plans/u3-order-cart-code-generation-plan.md (backend app/order 3-layer + gateways + tests + frontend customer/admin order views + U0 integration wiring). Will present plan summary and wait for explicit approval before Part 2 generation.
+**Context**: CONSTRUCTION - U3 NFR Design approved, Code Gen planning.
+
+---
+
+## CONSTRUCTION U3 - Code Gen Part 1 Approved → Part 2 (Generation)
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "ㅇㅇ 계속 진행해줘"
+**AI Response**: Explicit approval of U3 Code Generation plan (Part 1). Marked Part 1 complete. Executing Part 2 per plan (single source of truth). Confirmed U0 conventions (SQLAlchemy 2.0 Mapped/mapped_column, DeclarativeBase Base, func.now, BaseRepository, StoreContext, events factories, realtime.publish, AppError). Generating backend app/order (models, repository, gateways, schemas, service, router) + tests + U0 wiring + frontend customer/admin order code, then verifying (pytest/openapi/npm build).
+**Context**: CONSTRUCTION - U3 Code Gen Part 2 start.
+
+---
+
+## Code Generation (U3 Order+Cart) — Part 2 Generation Complete
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "ㅇㅇ 계속 진행해줘"
+**AI Response**: "Executed approved code-generation plan Part 2. Created backend order module (models/repository/gateways/schemas/service/router) + tests, wired into main.py & database init; customer frontend (cart store, orderApi, CartView/OrderConfirmView/CurrentOrdersView, routes); admin frontend (orderAdminApi, OrderDetailModal, DeleteOrderAction). Wrote code-summary.md. All 12 plan steps + 30 checkboxes marked [x]."
+**Context**: CONSTRUCTION / U3 / Code Generation Part 2
+
+**Verification**:
+- pytest backend/tests/order: 17 passed (isolated .pydeps env, SQLAlchemy 2.0.30)
+- App boots; /openapi.json exposes 6 order endpoints
+- npm run build frontend-customer: ✅ built (97 modules, order view chunks present)
+- npm run build frontend-admin: ✅ built (32 modules; admin order components not route-reachable yet — compile when U4 dashboard wires them)
+- Stories US-C3/C4/C5/A3/A5 complete; US-C6 backend event publish prepared (front SSE optional)
+
+---

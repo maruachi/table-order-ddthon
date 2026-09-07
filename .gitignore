@@ -57,3 +57,6 @@ node_modules/
 
 # ---- dev.sh 런타임 산출물 (PID/로그) ----
 .dev/
+
+# ---- Local pip --target install (test deps, not part of repo) ----
+.pydeps/
