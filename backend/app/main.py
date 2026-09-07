@@ -6,6 +6,7 @@ as they land.
 """
 from __future__ import annotations
 
+import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -20,13 +21,18 @@ from app.common.exceptions import register_exception_handlers
 async def lifespan(_: FastAPI):
     # Create schema on startup (create_all; non-destructive).
     init_db()
+    # U4 Realtime: bind the running event loop and register the broker as the
+    # in-process RealtimePublisher (Contract D). The router subscribes on the
+    # same module singleton.
+    from app.realtime.broker import broker
+    from app.common.realtime import register_publisher
+
+    broker.bind_loop(asyncio.get_running_loop())
+    register_publisher(broker)
     # Domain units register integrations at startup, e.g.:
     #   from app.auth.verifier import JwtTokenVerifier
     #   from app.common.security import register_token_verifier
     #   register_token_verifier(JwtTokenVerifier())
-    #   from app.realtime.broker import InMemoryBroker
-    #   from app.common.realtime import register_publisher
-    #   register_publisher(InMemoryBroker())
     yield
 
 
@@ -50,6 +56,11 @@ def create_app() -> FastAPI:
     # Domain routers are included as units land, e.g.:
     #   from app.auth.router import router as auth_router
     #   app.include_router(auth_router)
+    from app.session.router import router as session_router
+    from app.realtime.router import router as realtime_router
+
+    app.include_router(session_router)
+    app.include_router(realtime_router)
     return app
 
 

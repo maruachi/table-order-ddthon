@@ -9,8 +9,10 @@ const routes = [
   // { path: '/tables', component: () => import('../views/TablesView.vue') },      // U1
   // { path: '/menu', component: () => import('../views/MenuAdminView.vue') },     // U2
   // { path: '/orders/:id', component: () => import('../views/OrderDetailView.vue') }, // U3
-  // { path: '/dashboard', component: () => import('../views/DashboardView.vue') },// U4
-  // { path: '/history', component: () => import('../views/HistoryView.vue') },    // U4
+  // U4 routes. requiresAuth stays false until U1 login lands (standalone build/run);
+  // U1 to flip these to requiresAuth: true on integration.
+  { path: '/dashboard', name: 'dashboard', component: () => import('../views/DashboardView.vue'), meta: { requiresAuth: false } },
+  { path: '/history', name: 'history', component: () => import('../views/HistoryView.vue'), meta: { requiresAuth: false } },
   { path: '/', name: 'home', component: HomeView, meta: { requiresAuth: false } },
 ]
 

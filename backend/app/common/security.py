@@ -90,3 +90,17 @@ def require_table(
     if ctx.role != "table":
         raise ForbiddenError("table role required")
     return ctx
+
+
+def verify_token(token: str) -> StoreContext:
+    """Verify a raw token into a StoreContext (Contract E, additive).
+
+    Mirrors ``get_current_store_context`` but takes the token directly instead of
+    parsing an Authorization header. Used by SSE endpoints (U4), where the browser
+    ``EventSource`` cannot set headers and passes the token via query string.
+    """
+    if _verifier is None:
+        # Misconfiguration: Auth unit did not register a verifier (BR-U0-7).
+        logger.error("No TokenVerifier registered; authentication unavailable.")
+        raise AuthError("authentication not configured")
+    return _verifier.verify(token)

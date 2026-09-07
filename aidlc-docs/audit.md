@@ -161,3 +161,59 @@ AI-DLC 워크플로우를 시작해봅시다."
 **Context**: CONSTRUCTION - U0 complete, parallel dev ready. Awaiting approval.
 
 ---
+
+## CONSTRUCTION U4 - Session+Realtime Start (Functional Design)
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "현 레포에서 나는 이재환이고 해당 내용 진행하려고해. branch를 따서 작업할거야 계획작성해봐" (+ AskUserQuestion answers: 진행 방식=AI-DLC 정식 흐름; US-C6=포함)
+**AI Response**: 이재환 = U4 (Session + Realtime) 담당 확인. 새 브랜치 `feature/u4-session-realtime` 생성. AI-DLC 정식 흐름(Functional Design → NFR Requirements → NFR Design → [Infra 생략] → Code Generation)으로 진행 결정, US-C6(고객 상태 실시간, Could) 포함. 담당 스토리 US-A2/A6/A7/C6. Functional Design 착수: plan(질문 포함) 작성 예정.
+**Context**: CONSTRUCTION - U4 Functional Design start (branch feature/u4-session-realtime).
+
+---
+
+## CONSTRUCTION U4 - Functional Design Artifacts Generated
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "권장안대로"
+**AI Response**: U4 Functional Design plan 질문 9개를 권장안(Q1=C, Q2=A, Q3=A, Q4=A, Q5=A, Q6=A, Q7=C, Q8=A, Q9=A)으로 확정. 산출물 4개 생성: domain-entities.md(TableSession + SessionHistoryOrder/Line 스냅샷 엔티티, 부분 유니크 활성세션), business-logic-model.md(계약 B 세션 시작/조회, US-A6 종료+이력이관 흐름, US-A2 대시보드 스냅샷, pub-sub/SSE, US-A7 이력, US-C6 고객 필터 스트림), business-rules.md(BR-U4-1~16), frontend-components.md(Admin DashboardView/HistoryView+세션종료, Customer useOrderRealtime, API 연동 지점). plan 체크박스 [x]. 완료 게이트 제시 예정.
+**Context**: CONSTRUCTION - U4 Functional Design complete. Awaiting approval.
+
+---
+
+## CONSTRUCTION U4 - NFR Requirements + NFR Design
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "응 진행해봐" (+ /effort ultracode on)
+**AI Response**: Functional Design 승인으로 간주. NFR Requirements + NFR Design 두 문서 스테이지를 배치 처리(코드 미생성 파생 문서). NFR Requirements: nfr-requirements.md(NFR-1 실시간 U4 핵심책임, NFR-3 격리, NFR-4 영속, NFR-6 UI), tech-stack-decisions.md(U0 스택 상속 + SSE StreamingResponse·asyncio.Queue 브로커·loop.call_soon_threadsafe·Provider 레지스트리). NFR Design: nfr-design-patterns.md(pub-sub/SSE/스레드-루프 핸드오프/백프레셔/재동기화, 격리, 디커플링, best-effort), logical-components.md(session/realtime 컴포넌트 + verify_token 공유 편집 지점). 확장 3종 Disabled → N/A. 열린 질문 없음(Functional Design에서 NFR 결정 확정됨). Infra Design SKIP(로컬). aidlc-state U4 체크박스 갱신. 다음: Code Generation 계획(승인 게이트).
+**Context**: CONSTRUCTION - U4 NFR Requirements + NFR Design complete. Next: Code Generation plan gate.
+
+---
+
+## CONSTRUCTION U4 - Code Generation Plan (Part 1) - Approval Prompt
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: (pending — presenting code generation plan for approval)
+**AI Response**: U4 Code Generation Plan 작성(17 steps): Backend session(models/provider/repository/service/schemas/router) + realtime(broker/router) + additive 통합(security.verify_token, main.py, database.py) + Admin 프론트(session.js/DashboardView/HistoryView) + Customer 프론트(sse.js/realtime store) + tests(test_session/test_realtime) + code-summary. 계약 B/C/D/E·스토리 US-A2/A6/A7/C6 트레이스 포함. 승인 요청(Part 1 게이트).
+**Context**: CONSTRUCTION - U4 Code Generation Part 1 (Planning). Awaiting plan approval before generation.
+
+---
+
+## CONSTRUCTION U4 - Code Generation Plan Approval
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "응 진행해"
+**AI Response**: Code Generation Plan(17 steps) 승인으로 간주. ultracode 모드이므로 Workflow(u4-code-generation, 4단계: Implement 병렬4 → Integrate → Test 병렬2 → Review 적대적3)로 병렬 구현 + 적대적 검증 실행 결정. 사전에 백엔드 .venv 의존성 설치 + 양쪽 프론트 node_modules 설치 + 브랜치 feature/u4-session-realtime 체크아웃 완료.
+**Context**: CONSTRUCTION - U4 Code Generation Part 2 (Generation). Approved; executing via Workflow.
+
+---
+
+## CONSTRUCTION U4 - Code Generation Part 2 (Generation) - Executed
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "응 진행해" (동일 승인 하에 실행)
+**AI Response**: Workflow 완료(에이전트 10, 오류 0). 생성: backend/app/session/{models,provider,repository,service,schemas,router}.py, backend/app/realtime/{broker,router}.py, backend/tests/{test_session,test_realtime}.py, frontend-admin/src/{api/session.js,views/DashboardView.vue,views/HistoryView.vue}, frontend-customer/src/{api/sse.js,stores/realtime.js}. Additive 편집: common/security.py(verify_token), main.py(broker 싱글턴 register_publisher + bind_loop + include_router), common/database.py(session models import), frontend-admin/router/index.js(/dashboard·/history 슬롯). 적대적 리뷰(계약/멀티테넌시/실시간 3렌즈): blocker/major 0, minor 4. minor 반영: (1) start_or_get_active_session에 IntegrityError→rollback→refetch 멱등 가드(BR-U4-2 경합), (2) list_history_orders 조인에 TableSession.store_id 심층방어(NFR-3), (3) _now() naive-UTC 통일(closed_at 응답 형태 일치), (4) SSE 엔드포인트 인증/역할/필터 테스트 4종 추가. 나머지 minor(KST 날짜경계)는 로컬 데모 범위로 문서화. 검증: pytest 24 passed(U0 5 + realtime 10 + session 9), 앱 부팅 OK + /health 200 + openapi에 5개 U4 라우트 노출, frontend-admin/customer vite build 성공. SSE 라이브 curl 검증은 실제 TokenVerifier(U1) 등록 필요 — 통합 시점으로 이월(계약 우선 병렬개발). code-summary.md 작성, aidlc-state U4 Code Generation [x].
+**Context**: CONSTRUCTION - U4 Code Generation complete. Awaiting completion-gate decision (Request Changes / Continue to Next Stage).
+
+---
+
+## CONSTRUCTION U4 - Code Generation Completion Gate - Approval Prompt
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: (pending — presenting Code Generation completion gate)
+**AI Response**: Step 17 code-summary.md(aidlc-docs/construction/u4-session-realtime/code/code-summary.md) 작성 완료 — 생성/수정 파일, 계약 B/C/D/E·스토리 US-A2/A6/A7/C6 트레이스, 통합 지점 5종, 검증 결과, 적대적 리뷰(blocker/major 0, minor 4 반영) 문서화. 17-step 계획 전 항목 [x], aidlc-state U4 Code Generation [x]. 표준 2-option 완료 메시지 제시(변경 요청 / 다음 단계로 진행).
+**Context**: CONSTRUCTION - U4 Code Generation complete. Presenting standardized 2-option completion gate; awaiting explicit user decision.
+
+---

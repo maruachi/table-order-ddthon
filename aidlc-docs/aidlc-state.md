@@ -4,7 +4,7 @@
 - **Project Type**: Greenfield
 - **Project Name**: 테이블오더 서비스 (Table Order Service)
 - **Start Date**: 2026-09-07T03:08:55Z
-- **Current Stage**: CONSTRUCTION - U0 complete (awaiting approval); U1~U4 parallel dev ready
+- **Current Stage**: CONSTRUCTION - U0 complete; U4 Code Generation complete (feature/u4-session-realtime); U1/U2/U3 parallel dev pending
 
 ## Workspace State
 - **Existing Code**: No
@@ -63,7 +63,12 @@
 - [ ] U1 Auth (임동규) — Functional Design → NFR → Code Generation
 - [ ] U2 Menu (이원종) — Functional Design → NFR → Code Generation
 - [ ] U3 Order+Cart (최지영) — Functional Design → NFR → Code Generation
-- [ ] U4 Session+Realtime (이재환) — Functional Design → NFR → Code Generation
+- [x] U4 Session+Realtime (이재환) — branch feature/u4-session-realtime
+  - [x] Functional Design (approved)
+  - [x] NFR Requirements
+  - [x] NFR Design
+  - [x] Infrastructure Design — SKIP (local dev only)
+  - [x] Code Generation — verified: pytest 24 passed (U0 5 + realtime 10 + session 9), app boots + /health 200 + 5 U4 routes in openapi, both SPAs vite build OK; adversarial review 0 blocker/major (4 minor addressed). SSE live-curl deferred to integration (needs U1 TokenVerifier).
 
 - [ ] Build and Test - EXECUTE (after all units)
 
