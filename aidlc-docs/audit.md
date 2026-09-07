@@ -185,3 +185,27 @@ AI-DLC 워크플로우를 시작해봅시다."
 **Context**: CONSTRUCTION - U2 Menu Functional Design approved. Next = NFR Requirements (U2).
 
 ---
+
+## CONSTRUCTION U2 Menu - NFR Requirements Plan + Questions Created
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "이어서 진행" (after pushing u2-menu branch to origin successfully)
+**AI Response**: Started U2 NFR Requirements. Read nfr-requirements rule + U0 NFR/tech-stack artifacts. Noted U2 is pure CRUD/read domain: tech stack fully inherited from U0, most NFRs inherited (NFR-3 multitenancy via BaseRepository, NFR-4 persistence, NFR-6 touch UI, NFR-2 auth consumer; NFR-1 realtime N/A). Created aidlc-docs/construction/plans/u2-menu-nfr-requirements-plan.md with inherited-NFR mapping + scale/perf assumptions + 3 U2-specific [Answer]: questions: (Q1) pagination for menu/category lists, (Q2) customer menu response caching, (Q3) any new libraries beyond U0 stack. Awaiting 이원종's answers (GATE).
+**Context**: CONSTRUCTION - U2 Menu NFR Requirements, questions gate. Awaiting 이원종's answers.
+
+---
+
+## CONSTRUCTION U2 Menu - NFR Requirements Answers + Artifacts Generated
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: 이원종 answered Q1:A, Q2:A, Q3:A (after AI clarified the meaning of pagination/caching/new-library questions in chat).
+**AI Response**: Analyzed answers — all consistent, no ambiguity. Decisions: no pagination (small dataset, full return), no caching (per-request DB read, immediate reflection), no new dependencies beyond U0 stack (Pydantic HttpUrl for image_url, int ge=0 for price). Generated aidlc-docs/construction/u2-menu/nfr-requirements/: nfr-requirements.md (inherited NFR mapping NFR-3/4/6/2, NFR-1 N/A; performance/reliability/availability/maintainability/test notes; extensions disabled) and tech-stack-decisions.md (U0 stack inherited, no additions, implementation details via Pydantic/SQLAlchemy). Marked plan checkboxes [x]. Presenting NFR Requirements completion + REVIEW gate.
+**Context**: CONSTRUCTION - U2 Menu NFR Requirements artifacts complete. Awaiting 이원종's approval before NFR Design.
+
+---
+
+## CONSTRUCTION U2 Menu - NFR Requirements Approved + Committed/Pushed
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "승인 및 PUSH"
+**AI Response**: 이원종 approved U2 NFR Requirements and requested commit + push. Marked U2 NFR Requirements complete in aidlc-state.md (next = NFR Design). Committed nfr-requirements artifacts + plan + state/audit updates on branch u2-menu and pushed to origin/u2-menu.
+**Context**: CONSTRUCTION - U2 Menu NFR Requirements approved. Next = NFR Design (U2).
+
+---
