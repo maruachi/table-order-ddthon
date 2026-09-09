@@ -10,12 +10,12 @@ DTO는 요약 표기이며 상세 필드는 Functional Design에서 확정.
 
 ## 1. Platform / Common
 
-| 메서드 | 목적 | 입력 | 출력 |
-|---|---|---|---|
+| 메서드                                                  | 목적                              | 입력                        | 출력                                        |
+| ---------------------------------------------------- | ------------------------------- | ------------------------- | ----------------------------------------- |
 | `get_current_store_context(request) -> StoreContext` | 토큰 검증 후 요청 컨텍스트 생성(FastAPI 의존성) | Request(Authorization 헤더) | `StoreContext{store_id, table_id?, role}` |
-| `Store.get(store_id) -> Store` | 매장 조회 | store_id | Store |
-| `Table.list(ctx) -> list[Table]` | 매장 테이블 목록 | ctx | Table[] |
-| `Table.get(ctx, table_id) -> Table` | 테이블 단건 조회 | ctx, table_id | Table |
+| `Store.get(store_id) -> Store`                       | 매장 조회                           | store_id                  | Store                                     |
+| `Table.list(ctx) -> list[Table]`                     | 매장 테이블 목록                       | ctx                       | Table[]                                   |
+| `Table.get(ctx, table_id) -> Table`                  | 테이블 단건 조회                       | ctx, table_id             | Table                                     |
 
 > `BaseRepository[T]`: `get/list/add/update/delete` 제네릭 CRUD, 모든 쿼리에 `store_id` 조건 강제.
 

@@ -170,7 +170,10 @@ onMounted(load)
   display: flex; align-items: center; justify-content: center; padding: 20px;
 }
 .modal { background: #fff; border-radius: 16px; padding: 20px; max-width: 420px; width: 100%; }
-.modal-img { width: 100%; border-radius: 12px; margin-bottom: 12px; }
+.modal-img {
+  display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  background: #f3f4f6; border-radius: 12px; margin-bottom: 12px;
+}
 .modal-price { color: #2563eb; font-weight: 700; }
 .modal-desc { color: #4b5563; }
 .add-to-cart { width: 100%; min-height: 48px; margin-top: 16px; border-radius: 10px; border: none; background: #2563eb; color: #fff; font-size: 16px; }
